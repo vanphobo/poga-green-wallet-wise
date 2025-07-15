@@ -25,49 +25,51 @@ const HomeScreen = ({ onChatOpen, onTabChange }: HomeScreenProps) => {
     <div className="min-h-screen bg-background pb-20">
       {/* Header Section */}
       <div 
-        className="relative bg-gradient-primary rounded-b-3xl p-6 text-white"
+        className="relative bg-gradient-primary rounded-b-3xl p-6"
         style={{
           backgroundImage: `url(${homeBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-3">
-            <img 
-              src={userAvatar} 
-              alt="User Avatar" 
-              className="w-12 h-12 rounded-full border-2 border-white/20"
-            />
-            <div>
-              <h2 className="text-lg font-semibold">Hello, John!</h2>
-              <p className="text-white/80 text-sm">ID: PG-2024-0789</p>
-            </div>
-          </div>
+        <div className="flex justify-end mb-6">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => onTabChange('settings')}
-            className="text-white hover:bg-white/10"
+            className="text-foreground hover:bg-white/10"
           >
             <User className="w-5 h-5" />
           </Button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div>
-            <p className="text-white/80 text-sm">Total Balance</p>
-            <h1 className="text-3xl font-bold">$12,847.50</h1>
+            <p className="text-foreground/70 text-sm">Total Balance</p>
+            <h1 className="text-3xl font-bold text-foreground">$12,847.50</h1>
           </div>
           
           <div className="flex justify-between">
             <div>
-              <p className="text-white/80 text-xs">Uncategorized</p>
-              <p className="font-semibold">$2,340.00</p>
+              <p className="text-foreground/70 text-xs">Uncategorized</p>
+              <p className="font-semibold text-foreground">$2,340.00</p>
             </div>
             <div>
-              <p className="text-white/80 text-xs">Remaining Credit</p>
-              <p className="font-semibold">$5,000.00</p>
+              <p className="text-foreground/70 text-xs">Remaining Credit</p>
+              <p className="font-semibold text-foreground">$5,000.00</p>
+            </div>
+          </div>
+
+          {/* User Info at Bottom */}
+          <div className="flex items-center space-x-4 mt-8">
+            <img 
+              src={userAvatar} 
+              alt="User Avatar" 
+              className="w-16 h-16 rounded-full border-3 border-white/30"
+            />
+            <div>
+              <h2 className="text-xl font-semibold text-foreground">Hello, John!</h2>
+              <p className="text-foreground/70 text-sm">ID: PG-2024-0789</p>
             </div>
           </div>
         </div>
@@ -162,7 +164,7 @@ const HomeScreen = ({ onChatOpen, onTabChange }: HomeScreenProps) => {
         <Card className="shadow-soft border-primary/20">
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-foreground">AI Advice</h3>
+              <h3 className="font-semibold text-foreground">AI Financial Advice</h3>
               <Button
                 variant="ghost"
                 size="sm"
@@ -172,14 +174,25 @@ const HomeScreen = ({ onChatOpen, onTabChange }: HomeScreenProps) => {
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground mb-3">
-              You're spending 23% more on dining out this month. Consider allocating more to your "Fun" jar.
-            </p>
+            <div className="space-y-3">
+              <div className="p-3 bg-primary/5 rounded-lg border-l-4 border-primary">
+                <p className="text-sm font-medium text-foreground mb-1">Smart Spending Alert</p>
+                <p className="text-xs text-muted-foreground">
+                  You're spending 23% more on dining out this month. Consider allocating more to your "Fun" jar.
+                </p>
+              </div>
+              <div className="p-3 bg-success/5 rounded-lg border-l-4 border-success">
+                <p className="text-sm font-medium text-foreground mb-1">Savings Goal Progress</p>
+                <p className="text-xs text-muted-foreground">
+                  Great job! You're on track to reach your emergency fund goal by next month.
+                </p>
+              </div>
+            </div>
             <Button
               variant="outline"
               size="sm"
               onClick={onChatOpen}
-              className="w-full"
+              className="w-full mt-4"
             >
               <MessageCircle className="w-4 h-4 mr-2" />
               Chat with AI Assistant
