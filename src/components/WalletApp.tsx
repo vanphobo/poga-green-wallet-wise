@@ -7,6 +7,9 @@ import JarDetailScreen from './JarDetailScreen';
 import EditJarsScreen from './EditJarsScreen';
 import CardsScreen from './CardsScreen';
 import SettingsScreen from './SettingsScreen';
+import AnalysisScreen from './AnalysisScreen';
+import ProfileSettingsScreen from './ProfileSettingsScreen';
+import QRScanScreen from './QRScanScreen';
 import AIChat from './AIChat';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -15,6 +18,7 @@ const WalletApp = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedJar, setSelectedJar] = useState<string | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [selectedSetting, setSelectedSetting] = useState<string | null>(null);
 
   if (showSplash) {
     return <SplashScreen onComplete={() => setShowSplash(false)} />;
@@ -40,24 +44,7 @@ const WalletApp = () => {
       if (selectedJar === 'edit') {
         return <EditJarsScreen onBack={handleBackToJars} />;
       } else if (selectedJar === 'analysis') {
-        return (
-          <div className="min-h-screen bg-background pb-20 p-6">
-            <div className="bg-gradient-primary p-6 -m-6 mb-6 text-foreground rounded-b-3xl">
-              <h1 className="text-2xl font-bold">Detailed Analysis</h1>
-              <p className="text-foreground/70">Comprehensive financial overview</p>
-            </div>
-            <Card className="shadow-soft">
-              <CardHeader>
-                <CardTitle>Coming Soon</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Detailed analysis with charts and insights will be available soon.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        );
+        return <AnalysisScreen onBack={handleBackToJars} />;
       } else if (selectedJar) {
         return <JarDetailScreen jarId={selectedJar} onBack={handleBackToJars} />;
       } else {
@@ -76,26 +63,12 @@ const WalletApp = () => {
       case 'cards':
         return <CardsScreen />;
       case 'settings':
-        return <SettingsScreen />;
+        if (selectedSetting === 'profile') {
+          return <ProfileSettingsScreen onBack={() => setSelectedSetting(null)} />;
+        }
+        return <SettingsScreen onSettingSelect={setSelectedSetting} />;
       case 'qr':
-        return (
-          <div className="min-h-screen bg-background pb-20 p-6">
-            <div className="bg-gradient-primary p-6 -m-6 mb-6 text-foreground rounded-b-3xl">
-              <h1 className="text-2xl font-bold">QR Scanner</h1>
-              <p className="text-foreground/70">Scan QR codes for payments</p>
-            </div>
-            <Card className="shadow-soft">
-              <CardHeader>
-                <CardTitle>QR Code Scanner</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  QR code scanning functionality will be implemented soon.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        );
+        return <QRScanScreen onBack={() => setActiveTab('home')} />;
       default:
         return <HomeScreen onChatOpen={() => setIsChatOpen(true)} onTabChange={setActiveTab} />;
     }
@@ -109,7 +82,8 @@ const WalletApp = () => {
         onTabChange={(tab) => {
           setActiveTab(tab);
           setSelectedJar(null); // Reset jar selection when changing tabs
-        }} 
+          setSelectedSetting(null); // Reset setting selection when changing tabs
+        }}
       />
       <AIChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </>

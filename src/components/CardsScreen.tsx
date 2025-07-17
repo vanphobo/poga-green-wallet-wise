@@ -10,7 +10,8 @@ import {
   ArrowUpRight,
   ArrowDownLeft,
   Wallet,
-  MoreVertical
+  MoreVertical,
+  Trash2
 } from 'lucide-react';
 
 const CardsScreen = () => {
@@ -116,9 +117,19 @@ const CardsScreen = () => {
                     <p className="font-bold text-lg text-foreground">
                       ${bank.balance.toLocaleString()}
                     </p>
-                    <Button variant="ghost" size="sm" className="p-0 h-auto">
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
+                    <div className="flex space-x-1">
+                      <Button variant="ghost" size="sm" className="p-0 h-auto">
+                        <MoreVertical className="w-4 h-4" />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="p-0 h-auto text-destructive hover:text-destructive"
+                        onClick={() => console.log('Remove bank:', bank.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -183,6 +194,14 @@ const CardsScreen = () => {
                     </Button>
                     <Button variant="outline" size="sm">
                       <Wallet className="w-4 h-4" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="text-destructive hover:text-destructive border-destructive/20"
+                      onClick={() => console.log('Remove card:', card.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>

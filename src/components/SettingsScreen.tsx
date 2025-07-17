@@ -17,7 +17,11 @@ import {
 } from 'lucide-react';
 import userAvatar from '@/assets/user-avatar.png';
 
-const SettingsScreen = () => {
+interface SettingsScreenProps {
+  onSettingSelect: (setting: string) => void;
+}
+
+const SettingsScreen = ({ onSettingSelect }: SettingsScreenProps) => {
   const settingsGroups = [
     {
       title: 'Account',
@@ -26,7 +30,7 @@ const SettingsScreen = () => {
           icon: User,
           label: 'Profile Information',
           description: 'Update your personal details',
-          action: () => console.log('Profile clicked')
+          action: () => onSettingSelect('profile')
         },
         {
           icon: Lock,
