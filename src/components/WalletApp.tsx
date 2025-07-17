@@ -3,19 +3,68 @@ import SplashScreen from './SplashScreen';
 import BottomNavigation from './BottomNavigation';
 import HomeScreen from './HomeScreen';
 import JarsScreen from './JarsScreen';
+import JarDetailScreen from './JarDetailScreen';
+import EditJarsScreen from './EditJarsScreen';
+import CardsScreen from './CardsScreen';
+import SettingsScreen from './SettingsScreen';
 import AIChat from './AIChat';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const WalletApp = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
+  const [selectedJar, setSelectedJar] = useState<string | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   if (showSplash) {
     return <SplashScreen onComplete={() => setShowSplash(false)} />;
   }
 
+  const handleJarSelect = (jarId: string) => {
+    if (jarId === 'edit') {
+      setSelectedJar('edit');
+    } else if (jarId === 'analysis') {
+      setSelectedJar('analysis');
+    } else {
+      setSelectedJar(jarId);
+    }
+  };
+
+  const handleBackToJars = () => {
+    setSelectedJar(null);
+  };
+
   const renderScreen = () => {
+    // Handle jar-related screens
+    if (activeTab === 'jars') {
+      if (selectedJar === 'edit') {
+        return <EditJarsScreen onBack={handleBackToJars} />;
+      } else if (selectedJar === 'analysis') {
+        return (
+          <div className="min-h-screen bg-background pb-20 p-6">
+            <div className="bg-gradient-primary p-6 -m-6 mb-6 text-foreground rounded-b-3xl">
+              <h1 className="text-2xl font-bold">Detailed Analysis</h1>
+              <p className="text-foreground/70">Comprehensive financial overview</p>
+            </div>
+            <Card className="shadow-soft">
+              <CardHeader>
+                <CardTitle>Coming Soon</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Detailed analysis with charts and insights will be available soon.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        );
+      } else if (selectedJar) {
+        return <JarDetailScreen jarId={selectedJar} onBack={handleBackToJars} />;
+      } else {
+        return <JarsScreen onJarSelect={handleJarSelect} />;
+      }
+    }
+
     switch (activeTab) {
       case 'home':
         return (
@@ -24,52 +73,16 @@ const WalletApp = () => {
             onTabChange={setActiveTab}
           />
         );
-      case 'jars':
-        return <JarsScreen onJarSelect={(jarId) => console.log('Selected jar:', jarId)} />;
       case 'cards':
-        return (
-          <div className="min-h-screen bg-background pb-20 p-6">
-            <div className="bg-gradient-primary p-6 -m-6 mb-6 text-white rounded-b-3xl">
-              <h1 className="text-2xl font-bold">Cards & Banks</h1>
-              <p className="text-white/80">Manage your payment methods</p>
-            </div>
-            <Card className="shadow-soft">
-              <CardHeader>
-                <CardTitle>Coming Soon</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Bank and card management features will be available in the next update.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        );
+        return <CardsScreen />;
       case 'settings':
-        return (
-          <div className="min-h-screen bg-background pb-20 p-6">
-            <div className="bg-gradient-primary p-6 -m-6 mb-6 text-white rounded-b-3xl">
-              <h1 className="text-2xl font-bold">Settings</h1>
-              <p className="text-white/80">Customize your experience</p>
-            </div>
-            <Card className="shadow-soft">
-              <CardHeader>
-                <CardTitle>Account Settings</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Settings and account management features coming soon.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        );
+        return <SettingsScreen />;
       case 'qr':
         return (
           <div className="min-h-screen bg-background pb-20 p-6">
-            <div className="bg-gradient-primary p-6 -m-6 mb-6 text-white rounded-b-3xl">
+            <div className="bg-gradient-primary p-6 -m-6 mb-6 text-foreground rounded-b-3xl">
               <h1 className="text-2xl font-bold">QR Scanner</h1>
-              <p className="text-white/80">Scan QR codes for payments</p>
+              <p className="text-foreground/70">Scan QR codes for payments</p>
             </div>
             <Card className="shadow-soft">
               <CardHeader>
@@ -91,7 +104,13 @@ const WalletApp = () => {
   return (
     <>
       {renderScreen()}
-      <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      <BottomNavigation 
+        activeTab={activeTab} 
+        onTabChange={(tab) => {
+          setActiveTab(tab);
+          setSelectedJar(null); // Reset jar selection when changing tabs
+        }} 
+      />
       <AIChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </>
   );

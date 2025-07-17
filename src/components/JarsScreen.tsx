@@ -7,6 +7,7 @@ import {
   Plus, 
   Minus, 
   Eye,
+  Edit3,
   ChevronRight,
   Target,
   Home,
@@ -120,14 +121,24 @@ const JarsScreen = ({ onJarSelect }: JarsScreenProps) => {
               <Progress value={(totalBalance / totalTarget) * 100} className="h-2" />
             </div>
 
-            <Button 
-              variant="outline" 
-              className="w-full"
-              onClick={() => onJarSelect('analysis')}
-            >
-              <Eye className="w-4 h-4 mr-2" />
-              Detailed Analysis
-            </Button>
+            <div className="flex space-x-2">
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => onJarSelect('analysis')}
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                Analysis
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => onJarSelect('edit')}
+              >
+                <Edit3 className="w-4 h-4 mr-2" />
+                Edit Jars
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
